@@ -18,7 +18,7 @@ public class TestJenkins {
         return "Hello Jenkins";
     }
 
-    @GetMapping(value = "/getResume")
+    @GetMapping(value = "/resume")
     @ResponseBody
     public void getResumeUrl(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
