@@ -1,6 +1,7 @@
 package org.learning.jenkins;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,25 +22,26 @@ public class TestJenkins {
     @GetMapping(value = "/resume")
     @ResponseBody
     public void getResumeUrl(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-        File file = new ClassPathResource("static/test_resume.pdf").getFile();
-        if (!file.exists()) {
-            return;
-        }
-
+        String name = "test_resume.pdf";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/test_resume.pdf");
         //下载的文件携带这个名称
-        response.setHeader("Content-Disposition", "attachment;filename=" + file.getName());
+        response.setHeader("Content-Disposition", "attachment;filename=" + name);
         //二进制文件
         response.setContentType("application/octet-stream");
 
         try {
-            FileInputStream fis = new FileInputStream(file);
-            byte[] content = new byte[fis.available()];
-            fis.read(content);
-            fis.close();
-
+//            FileInputStream fis = new FileInputStream();
+            byte[] content = new byte[inputStream.available()];
             ServletOutputStream sos = response.getOutputStream();
-            sos.write(content);
+            int length;
+            while ((length = inputStream.read(content)) > 0) {
+                sos.write(content, 0,length);
+            }
+//            inputStream.read(content);
+            inputStream.close();
+
+
+//            sos.write(content);
 
             sos.flush();
             sos.close();
