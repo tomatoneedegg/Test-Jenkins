@@ -22,27 +22,21 @@ public class TestJenkins {
     @GetMapping(value = "/resume")
     @ResponseBody
     public void getResumeUrl(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String name = "test_resume.pdf";
-        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/test_resume.pdf");
+        String name = "后端开发+邓博文+13143544527.pdf";
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/"+name);
         //下载的文件携带这个名称
         response.setHeader("Content-Disposition", "attachment;filename=" + name);
         //二进制文件
         response.setContentType("application/octet-stream");
 
         try {
-//            FileInputStream fis = new FileInputStream();
             byte[] content = new byte[inputStream.available()];
             ServletOutputStream sos = response.getOutputStream();
             int length;
             while ((length = inputStream.read(content)) > 0) {
                 sos.write(content, 0,length);
             }
-//            inputStream.read(content);
             inputStream.close();
-
-
-//            sos.write(content);
-
             sos.flush();
             sos.close();
         } catch (Exception e) {
