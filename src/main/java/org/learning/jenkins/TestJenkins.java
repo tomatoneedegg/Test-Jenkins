@@ -10,6 +10,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
+import java.net.URLEncoder;
 
 @RestController
 public class TestJenkins {
@@ -25,7 +26,8 @@ public class TestJenkins {
         String name = "后端开发+邓博文+13143544527.pdf";
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("static/"+name);
         //下载的文件携带这个名称
-        response.setHeader("Content-Disposition", "attachment;filename=" + name);
+        response.setHeader("Content-Disposition",
+                "attachment;fileName="+  name +";filename*=utf-8''"+ URLEncoder.encode(name,"UTF-8"));
         //二进制文件
         response.setContentType("application/octet-stream");
 
